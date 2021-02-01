@@ -1,0 +1,1 @@
+from indigo_research.research_table import ResearchTable
