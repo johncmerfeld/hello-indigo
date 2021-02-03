@@ -1,8 +1,11 @@
 import string
 import pandas as pd
+import numpy as np
 
 from indigo_research.mappings import employee_mapping
 from indigo_research.mappings import experiment_mapping
+from indigo_research.mappings import sample_mapping
+from indigo_research.mappings import test_mapping
 
 
 # silence chained_assignment warning
@@ -116,9 +119,11 @@ class ResearchTable:
 
         received_col = "date_received_at_qa"
         days_between_col = "days between treatment and planting"
+        days_between_col_clean = "days_between_treated_and_planted"
         received_by_col = "sample received by"
+        qa_col = "is_qa_needed"
 
-        df = df[
+        sample_df = df[
             [
                 "irp_barcode",
                 received_col,
@@ -127,24 +132,29 @@ class ResearchTable:
                 "date_planted",
                 days_between_col,
                 "date_sample_taken",
-                "is_qa_needed",
+                qa_col,
             ]
         ]
 
-        df.rename(
+        sample_df.rename(
             columns={
                 received_col: "date_received",
-                days_between_col: "days_between_treated_and_planted",
+                days_between_col: days_between_col_clean,
                 received_by_col: "received_by_employee_id",
             },
             inplace=True,
         )
 
-        # TODO enforce days_between_treated_and_planted
-        # TODO clean is_qa_needed
-        # TODO date_treated strings...!
+        sample_df[days_between_col_clean] = sample_df[days_between_col_clean].apply(
+            lambda s: float(ResearchTable.__remove_letters(s))
+        )
+        sample_df[qa_col] = sample_df[qa_col].apply(
+            lambda s: ResearchTable.__clean_string(str(s))
+        )
 
-        return df
+        sample_df.replace(sample_mapping, inplace=True)
+
+        return sample_df
 
     @staticmethod
     def __process_test_data(df):
@@ -152,10 +162,11 @@ class ResearchTable:
         tested_by_col = "sample tested by"
         seeds_col = "seeds/g"
         mass_col = "mass seed extracted"
+        mass_col_grams = "mass_seed_extracted_grams"
         plated_vol_col = "plated volume"
         cfu_per_seed = "cfu/seed"
 
-        df = df[
+        test_df = df[
             [
                 "irp_barcode",
                 received_col,
@@ -175,12 +186,12 @@ class ResearchTable:
             ]
         ]
 
-        df.rename(
+        test_df.rename(
             columns={
                 received_col: "date_received",
                 tested_by_col: "tested_by_employee_id",
                 seeds_col: "seeds_per_gram",
-                mass_col: "mass_seed_extracted",
+                mass_col: mass_col_grams,
                 plated_vol_col: "plated_volume",
                 f"{cfu_per_seed} 1x": "cfu_per_1_seed",
                 f"{cfu_per_seed} 10x": "cfu_per_10_seed",
@@ -190,11 +201,13 @@ class ResearchTable:
             inplace=True,
         )
 
-        # TODO deal with "grams", possibly rename column
-        # TODO handle text entries...
-        # TODO what to do with TCTC??
+        test_df[mass_col_grams] = test_df[mass_col_grams].apply(
+            lambda s: float(ResearchTable.__remove_letters(s))
+        )
 
-        return df
+        test_df.replace(test_mapping, inplace=True)
+
+        return test_df
 
     @staticmethod
     def __clean_string(s):
@@ -206,8 +219,15 @@ class ResearchTable:
         s = "".join(ch for ch in s if ch not in exclude)
         return s
 
+    @staticmethod
+    def __remove_letters(s):
+        if type(s) == float:
+            if np.isnan(s):
+                return np.nan
+        return "".join(c for c in str(s) if c.isdigit())
+
     def write(self):
-        self.df.to_csv(f"{self.name}.csv", index=False)
+        self.df.to_csv(f"{self.name}.csv", index=False, na_rep="NULL")
 
 
 # TODO what if I instead did a general model class with named tables

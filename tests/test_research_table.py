@@ -12,6 +12,12 @@ def test_data():
     return loader.load_data()
 
 
+def assert_no_strings_in(col):
+    vals = list(col)
+    for val in vals:
+        assert type(val) != str
+
+
 def test_valid_table_names():
     # an invalid table name will throw an error
     try:
@@ -24,7 +30,7 @@ def test_valid_table_names():
 def test_process_employee_data(test_data):
     employee = ResearchTable(test_data, "Employee")
     assert set(employee.df.columns) == set(["id", "name", "manager_id", "team_id"])
-    print(f"\n{employee.df.to_string()}")
+    # print(f"\n{employee.df.to_string()}")
     assert employee.df.shape == (3, 4)
 
 
@@ -39,7 +45,7 @@ def test_process_experiment_data(test_data):
             "sample_seed_variety",
         ]
     )
-    print(f"\n{experiment.df.to_string()}")
+    # print(f"\n{experiment.df.to_string()}")
     assert experiment.df.shape == (274, 5)
 
 
@@ -57,9 +63,10 @@ def test_process_sample_data(test_data):
             "is_qa_needed",
         ]
     )
-    print(f"\n{sample.df.to_string()}")
+    # print(f"\n{sample.df.to_string()}")
     assert sample.df.shape == (377, 8)
     assert set(list(sample.df["is_qa_needed"])) == set([True, False, np.nan])
+    assert_no_strings_in(sample.df["days_between_treated_and_planted"])
 
 
 def test_process_test_data(test_data):
@@ -73,7 +80,7 @@ def test_process_test_data(test_data):
             "chemical_treatment_visible",
             "plating_code",
             "seeds_per_gram",
-            "mass_seed_extracted",
+            "mass_seed_extracted_grams",
             "plated_volume",
             "cfu_per_1_seed",
             "cfu_per_10_seed",
@@ -84,6 +91,7 @@ def test_process_test_data(test_data):
         ]
     )
 
-    test.df.drop(columns=["comment"], inplace=True)
-    print(f"\n{test.df.to_string()}")
+    # print(f"\n{test.df.to_string()}")
     assert test.df.shape == (377, 15)
+    assert_no_strings_in(test.df["mass_seed_extracted_grams"])
+    assert_no_strings_in(test.df["average_cfu_per_seed"])

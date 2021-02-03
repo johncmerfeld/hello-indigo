@@ -23,3 +23,13 @@ def test_validator(default_path):
             Validator(df_dict[df], warn_only=True)
     # how many errors were raised while reading these two dataframes?
     assert len(record) == 2
+
+
+def test_validator_with_error(default_path):
+    df_dict = pd.read_excel(default_path, sheet_name=None)
+    try:
+        for df in df_dict:
+            Validator(df_dict[df], warn_only=False)
+        assert False
+    except ValueError:
+        assert True

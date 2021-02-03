@@ -19,6 +19,10 @@ Clean sheet added to test validator
 
 Mapping as an imperfect solution
 
-Removing NaNs from reference tables
+Removing NaNs from reference table
+  But not experiment!
 
 Dropping the "Team" and "Farm" tables
+
+
+The codes / code tables
