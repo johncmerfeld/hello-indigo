@@ -1,3 +1,4 @@
+import os
 import string
 import pandas as pd
 import numpy as np
@@ -227,4 +228,7 @@ class ResearchTable:
         return "".join(c for c in str(s) if c.isdigit())
 
     def write(self):
-        self.df.to_csv(f"{self.name}.csv", index=False, na_rep="NULL")
+        outdir = "./csvs"
+        if not os.path.exists(outdir):
+            os.mkdir(outdir)
+        self.df.to_csv(f"./csvs/{self.name}.csv", index=False, na_rep="NULL")

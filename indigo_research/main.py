@@ -22,7 +22,7 @@ def main(path):
 
     # static reference table for tricky CFU values
     code_df = create_code_table()
-    code_df.to_csv("CfuCode.csv", index=False)
+    code_df.to_csv("csvs/CfuCode.csv", index=False)
 
 
 if __name__ == "__main__":
