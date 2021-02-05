@@ -228,6 +228,3 @@ class ResearchTable:
 
     def write(self):
         self.df.to_csv(f"{self.name}.csv", index=False, na_rep="NULL")
-
-
-# TODO what if I instead did a general model class with named tables

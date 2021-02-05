@@ -44,7 +44,7 @@ def test_process_experiment_data(test_data):
             "sample_seed_variety",
         ]
     )
-    assert experiment.df.shape == (274, 5)
+    assert experiment.df.shape == (273, 5)
 
 
 def test_process_sample_data(test_data):

@@ -3,6 +3,7 @@ import numpy as np
 from indigo_research.research_table import ResearchTable
 from indigo_research.utils import Loader
 from indigo_research.utils import Validator
+from indigo_research.utils import create_code_table
 
 
 def main(path):
@@ -18,6 +19,10 @@ def main(path):
     experiment.write()
     sample.write()
     test.write()
+
+    # static reference table for tricky CFU values
+    code_df = create_code_table()
+    code_df.to_csv("CfuCode.csv", index=False)
 
 
 if __name__ == "__main__":

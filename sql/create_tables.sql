@@ -1,48 +1,48 @@
 CREATE TABLE `Employee` (
 	`id` varchar(256) NOT NULL,
 	`name` varchar(256),
-	`manager_id` varchar(256) NOT NULL,
-	`team_id` varchar(256) NOT NULL,
+	`manager_id` varchar(256),
+	`team_id` varchar(256),
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Experiment` (
 	`irp_barcode` varchar(256) NOT NULL,
-	`from_farm_id` varchar(256) NOT NULL,
-	`sample_crop` varchar(256) NOT NULL,
-	`sample_treatment` varchar(256) NOT NULL,
-	`sample_seed_variety` varchar(256) NOT NULL,
+	`from_farm_id` varchar(256),
+	`sample_crop` varchar(256),
+	`sample_treatment` varchar(256),
+	`sample_seed_variety` varchar(256),
 	PRIMARY KEY (`irp_barcode`)
 );
 
 CREATE TABLE `Sample` (
 	`irp_barcode` varchar(256) NOT NULL,
 	`date_received` DATE NOT NULL,
-	`received_by_employee_id` varchar(256) NOT NULL,
-	`date_treated` DATE NOT NULL,
-	`date_planted` DATE NOT NULL,
-	`days_between_treated_and_planted` INT NOT NULL,
+	`received_by_employee_id` varchar(256),
+	`date_treated` DATE,
+	`date_planted` DATE,
+	`days_between_treated_and_planted` INT,
   `date_sample_taken` DATE,
-	`is_qa_needed` BOOLEAN NOT NULL,
+	`is_qa_needed` BOOLEAN,
 	PRIMARY KEY (`irp_barcode`,`date_received`)
 );
 
 CREATE TABLE `Test` (
 	`irp_barcode` varchar(256) NOT NULL,
 	`date_received` DATE NOT NULL,
-	`tested_by_employee_id` varchar(256) NOT NULL,
-	`date_plated_on` DATE NOT NULL,
-	`chemical_treatment_visible` varchar(1024) NOT NULL,
-	`plating_code` varchar(256) NOT NULL,
-	`seeds_per_gram` DECIMAL(10) NOT NULL,
-	`mass_seed_extracted` DECIMAL(10) NOT NULL,
-	`plated_volume` DECIMAL(10) NOT NULL,
-	`cfu_per_1_seed` DECIMAL(10) NOT NULL,
-	`cfu_per_10_seed` DECIMAL(10) NOT NULL,
-	`cfu_per_100_seed` DECIMAL(10) NOT NULL,
-	`cfu_per_1000_seed` DECIMAL(10) NOT NULL,
-	`average_cfu_per_seed` DECIMAL(10) NOT NULL,
-	`comment` VARCHAR(1024) NOT NULL
+	`tested_by_employee_id` varchar(256),
+	`date_plated_on` DATE,
+	`chemical_treatment_visible` varchar(1024),
+	`plating_code` varchar(256),
+	`seeds_per_gram` DECIMAL(10),
+	`mass_seed_extracted` DECIMAL(10),
+	`plated_volume` DECIMAL(10),
+	`cfu_per_1_seed` DECIMAL(10),
+	`cfu_per_10_seed` DECIMAL(10),
+	`cfu_per_100_seed` DECIMAL(10),
+	`cfu_per_1000_seed` DECIMAL(10),
+	`average_cfu_per_seed` DECIMAL(10),
+	`comment` VARCHAR(1024)
 );
 
 CREATE TABLE `CfuCode` (
