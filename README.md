@@ -38,6 +38,14 @@ python -m indigo_research.main
 
 The result should be 5 CSV files corresponding to the tables in `create_tables.sql`
 
+## My workflow
+  - Created the table structures on [DB Designer](https://www.dbdesigner.net/)
+  - Ran the create_tables.sql script in MySQL to make sure everything worked
+  - Wrote unit tests for the utility classes (`Loader` and `Validator`)
+  - Toyed with a few ideas for the main `ResearchTable` class
+  - After settling on a design, wrote test cases for each table it would produce
+  - Iterated on the corresponding code and refined the tests until all tests passed 
+
 ## A few comments on design decisions
 
 ### Data model
