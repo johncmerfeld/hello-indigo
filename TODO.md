@@ -7,10 +7,6 @@ Justify decisions, e.g.
   - Python class gets correct subset of df as input // verbosity vs. readability
 
 
-TO-WRITE:
-  - Loader that converts multiple sheets into one dataframe
-  - Validator
-
 TAKE NOTE:
 "irp_qa_sample_barcode",
 "sample_crop",

@@ -3,6 +3,7 @@ import pytest
 import warnings
 from indigo_research.utils import Loader
 from indigo_research.utils import Validator
+from indigo_research.utils import create_code_table
 
 
 @pytest.fixture
@@ -16,6 +17,7 @@ def test_loader(default_path):
     assert df.shape == (723, 31)
 
 
+# ordinarily, the validator merely raises a warning
 def test_validator(default_path):
     df_dict = pd.read_excel(default_path, sheet_name=None)
     with pytest.warns(None) as record:
@@ -25,6 +27,7 @@ def test_validator(default_path):
     assert len(record) == 2
 
 
+# test the validator's "strict" setting
 def test_validator_with_error(default_path):
     df_dict = pd.read_excel(default_path, sheet_name=None)
     try:
@@ -33,3 +36,10 @@ def test_validator_with_error(default_path):
         assert False
     except ValueError:
         assert True
+
+
+# test static cfu_code table creator
+def test_code_table():
+    df = create_code_table()
+    assert df.shape == (4, 2)
+    assert set(["code", "description"]) == set(list(df.columns))

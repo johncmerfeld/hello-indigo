@@ -45,18 +45,12 @@ class ResearchTable:
         self.name = name
 
     @staticmethod
-    def __table_exists(name):
-        for table in self.__VALID_NAMES:
-            if name.lower() == table.lower():
-                return True
-        return False
-
-    @staticmethod
     def __process_employee_data(df):
         employee_col = "sample received by"
         manager_col = "employee manager"
         team_col = "employee team"
 
+        # resolve repeated column names
         received_df = df[[employee_col, manager_col, team_col]]
         tested_df = df[["sample tested by", f"{manager_col}.1", f"{team_col}.1"]]
         tested_df.columns = received_df.columns
@@ -71,6 +65,8 @@ class ResearchTable:
             },
             inplace=True,
         )
+
+        # a few ad-hoc measures to resolve discrepencies in the name field
         employee_df["name"] = ""
         employee_df["team_id"] = employee_df["team_id"].apply(
             lambda s: ResearchTable.__clean_string(s)
@@ -78,6 +74,8 @@ class ResearchTable:
 
         employee_df.replace(employee_mapping, inplace=True)
 
+        # drop na because the only relevant field is the primary key
+        # i.e., without a name, there's no point having a record
         return employee_df.drop_duplicates().dropna()
 
     @staticmethod
@@ -108,11 +106,10 @@ class ResearchTable:
             lambda s: ResearchTable.__clean_string(s)
         )
 
+        # ad-hoc fixes
         experiment_df.replace(experiment_mapping, inplace=True)
 
-        # TODO deal with "n/a" in sample_treatment
-
-        return experiment_df.drop_duplicates()  # .dropna()
+        return experiment_df.drop_duplicates()
 
     @staticmethod
     def __process_sample_data(df):
@@ -145,6 +142,7 @@ class ResearchTable:
             inplace=True,
         )
 
+        # clean this numeric column (NOTE: not validating accuracy of number for now)
         sample_df[days_between_col_clean] = sample_df[days_between_col_clean].apply(
             lambda s: float(ResearchTable.__remove_letters(s))
         )
@@ -152,6 +150,7 @@ class ResearchTable:
             lambda s: ResearchTable.__clean_string(str(s))
         )
 
+        # ad-hoc fixes
         sample_df.replace(sample_mapping, inplace=True)
 
         return sample_df
@@ -205,6 +204,7 @@ class ResearchTable:
             lambda s: float(ResearchTable.__remove_letters(s))
         )
 
+        # ad-hoc fixes
         test_df.replace(test_mapping, inplace=True)
 
         return test_df

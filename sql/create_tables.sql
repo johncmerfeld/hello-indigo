@@ -42,22 +42,22 @@ CREATE TABLE `Test` (
 	`cfu_per_100_seed` DECIMAL(10) NOT NULL,
 	`cfu_per_1000_seed` DECIMAL(10) NOT NULL,
 	`average_cfu_per_seed` DECIMAL(10) NOT NULL,
-	`comment` varchar(1024) NOT NULL
+	`comment` VARCHAR(1024) NOT NULL
 );
-/*
+
+CREATE TABLE `CfuCode` (
+	`code` INTEGER NOT NULL,
+	`description` VARCHAR(1024) NOT NULL
+);
+
+
+
 ALTER TABLE `Employee` ADD CONSTRAINT `Employee_fk0` FOREIGN KEY (`manager_id`) REFERENCES `Employee`(`id`);
-
-ALTER TABLE `Employee` ADD CONSTRAINT `Employee_fk1` FOREIGN KEY (`team_id`) REFERENCES `Team`(`id`);
-
-ALTER TABLE `Experiment` ADD CONSTRAINT `Experiment_fk0` FOREIGN KEY (`from_farm_id`) REFERENCES `Farm`(`ID`);
 
 ALTER TABLE `Sample` ADD CONSTRAINT `Sample_fk0` FOREIGN KEY (`irp_barcode`) REFERENCES `Experiment`(`irp_barcode`);
 
 ALTER TABLE `Sample` ADD CONSTRAINT `Sample_fk1` FOREIGN KEY (`received_by_employee_id`) REFERENCES `Employee`(`id`);
 
-ALTER TABLE `Test` ADD CONSTRAINT `Test_fk0` FOREIGN KEY (`irp_barcode`) REFERENCES `Experiment`(`irp_barcode`);
+ALTER TABLE `Test` ADD CONSTRAINT `Test_fk0` FOREIGN KEY (`date_received`, `irp_barcode`) REFERENCES `Sample`(`date_received`, `irp_barcode`);
 
-ALTER TABLE `Test` ADD CONSTRAINT `Test_fk1` FOREIGN KEY (`date_received`) REFERENCES `Sample`(`date_received`);
-
-ALTER TABLE `Test` ADD CONSTRAINT `Test_fk2` FOREIGN KEY (`tested_by_employee_id`) REFERENCES `Employee`(`id`);
-*/
+ALTER TABLE `Test` ADD CONSTRAINT `Test_fk1` FOREIGN KEY (`tested_by_employee_id`) REFERENCES `Employee`(`id`);

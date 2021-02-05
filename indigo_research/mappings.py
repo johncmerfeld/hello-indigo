@@ -7,6 +7,9 @@ experiment_mapping = {
     "Sylvester PhotonAX HRW": "Sylvester PhotonAX HRWW",
     "Sylvester Langin": "Sylvester Langin HRWW",
     "Sylvester Tam 114 HRWW": "Sylvester Tam114 HRWW",
+    "N/A": np.nan,
+    "N/a": np.nan,
+    "n/a": np.nan,
 }
 
 sample_mapping = {
